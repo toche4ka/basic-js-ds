@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError, ListNode } = require('../extensions/index.js');
 
 // const { ListNode } = require('../extensions/list-node.js');
 
@@ -14,23 +14,45 @@ const { NotImplementedError } = require('../extensions/index.js');
  * queue.getUnderlyingList() // returns { value: 3, next: null }
  */
 class Queue {
+	constructor() {
+		this.head = null;
+		this.tail = null;
+	}
 
-  getUnderlyingList() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+	getUnderlyingList() {
+		return this.head;
+	}
+	// Добавляем элемент в конец очереди
+	enqueue(value) {
+		const newNode = new ListNode(value)
+		if (!this.head) {
+			// Если очередь пуста, и голова, и хвост указывают на новый узел
+			this.head = newNode;
+			this.tail = newNode;
+		} else {
+			// Добавляем узел в конец очереди
+			this.tail.next = newNode;
+			this.tail = newNode; // Обновляем хвост
+		}
+	}
+	// Удаляем и возвращаем первый элемент из очереди
+	dequeue() {
+		if (!this.head) {
+			// Если очередь пуста, возвращаем undefined
+			return undefined;
+		}
 
-  enqueue(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+		const removedValue = this.head.value; // Сохраняем значение первого элемента
+		this.head = this.head.next; // Перемещаем голову на следующий узел
 
-  dequeue() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+		if (!this.head) {
+			// Если очередь стала пустой, сбрасываем хвост
+			this.tail = null;
+		}
+		return removedValue; // Возвращаем удаленное значение
+	}
 }
 
 module.exports = {
-  Queue
+	Queue
 };
